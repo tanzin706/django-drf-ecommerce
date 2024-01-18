@@ -4,4 +4,4 @@ venv/
 db.sqlite*
 .env
 .coverage
-.vscode
+env_3_11/
