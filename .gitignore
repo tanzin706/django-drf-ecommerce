@@ -4,5 +4,6 @@ venv/
 db.sqlite*
 .env
 .coverage
-
+schema.yml
 env_3_11/
+htmlcov/

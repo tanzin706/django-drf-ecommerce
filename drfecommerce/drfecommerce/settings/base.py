@@ -128,5 +128,5 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Django DRF Ecommerce",
+    "TITLE": "Django DRF Ecommerce_TDawg Tranning Ground",
 }

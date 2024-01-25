@@ -30,7 +30,7 @@ class Product(models.Model):
     brand = models.ForeignKey(
         Brand, on_delete=models.CASCADE
     )  # if brand is deleted all products of that brand will be deleted
-    Category = TreeForeignKey(
+    category = TreeForeignKey(
         "Category", on_delete=models.SET_NULL, null=True, blank=True
     )
 
