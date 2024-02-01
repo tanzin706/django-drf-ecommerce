@@ -1,0 +1,19 @@
+django
+python-dotenv
+djangorestframework
+pytest
+pytest-django
+django-mptt
+drf-spectacular
+coverage
+pytest-cov
+
+##commands##
+
+python manage.py spectacular --file schema.yml          ##with drf-spectacular installed
+pip install coverage
+coverage run -m pytest              ##with only coverage installed
+coverage html                       ##creates html file of test report
+pip install pytest-cov
+pytest --cov                        ##with pytest-cov installed, shows test report on terminal
+pip install pytest-factoryboy       #with pytest installed

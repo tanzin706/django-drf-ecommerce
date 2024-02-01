@@ -4,7 +4,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 # Create your models here.
 class Category(MPTTModel):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     parent = TreeForeignKey(
         "self", on_delete=models.PROTECT, null=True, blank=True
     )  # if you want to delete category, then u first have to delete all the entries of it first...example: want to del clothes(u 1st need to del shirts and pants)
@@ -17,7 +17,7 @@ class Category(MPTTModel):
 
 
 class Brand(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
