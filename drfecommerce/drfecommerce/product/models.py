@@ -25,14 +25,29 @@ class Brand(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=255)
     description = models.TextField(blank=True)
     is_digital = models.BooleanField(default=False)
     brand = models.ForeignKey(
         Brand, on_delete=models.CASCADE
     )  # if brand is deleted all products of that brand will be deleted
     category = TreeForeignKey(
-        "Category", on_delete=models.SET_NULL, null=True, blank=True
+        "Category",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,  ### Category is in quotation Because of Category model is MPTT###
     )
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+
+class ProductLine(models.Model):
+    price = models.DecimalField(decimal_places=2, max_digits=5)
+    sku = models.CharField(max_length=100)
+    stock_qty = models.IntegerField()
+    product = models.ForeignKey(
+        "Product", on_delete=models.CASCADE
+    )  ### Product is in quotation Because of Product model has Category model in it which is MPTT###
+    is_active = models.BooleanField(default=False)

@@ -15,7 +15,7 @@ class TestCategoryEndpoints:
         response = api_client().get(self.endpoint)
         ##Assert
         assert response.status_code == 200
-        print(json.loads(response.content))
+        ##print(json.loads(response.content))
         assert len(json.loads(response.content)) == 4
 
 
@@ -24,12 +24,16 @@ class TestBrandEndpoints:
 
     def test_brand_get(self, brand_factory, api_client):
         # Arrange
-        brand_factory.create_batch(4)
+        brand_factory.create_batch(
+            4
+        )  ###Loads the test brand from test database for use##
         # Act
-        response = api_client().get(self.endpoint)
+        response = api_client().get(
+            self.endpoint
+        )  ###tests end point brand"api/brand" url tested,viewset tested and serializer tested###
         ##Assert
         assert response.status_code == 200
-        print(json.loads(response.content))
+        ##print(json.loads(response.content))
         assert len(json.loads(response.content)) == 4
 
 
@@ -43,5 +47,5 @@ class TestProductEndpoints:
         response = api_client().get(self.endpoint)
         ##Assert
         assert response.status_code == 200
-        print(json.loads(response.content))
+        ##print(json.loads(response.content))
         assert len(json.loads(response.content)) == 4
