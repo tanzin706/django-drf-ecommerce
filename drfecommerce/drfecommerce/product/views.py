@@ -53,7 +53,7 @@ class ProductViewSet(viewsets.ViewSet):
     A Simple Viewset for viewing all Products
     """
 
-    queryset = Product.objects.all()  # database to django(queryset)
+    queryset = Product.objects.isactive()  # database to django(queryset)
     lookup_field = "slug"
 
     @extend_schema(
