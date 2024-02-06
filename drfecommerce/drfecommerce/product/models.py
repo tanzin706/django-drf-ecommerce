@@ -2,6 +2,23 @@ from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 
 
+# class ActiveManager(models.Manager):
+#     # def get_queryset(self):
+#     #     return super().get_queryset().filter(is_active=True)
+#     def isactive(self):
+#         return self.get_queryset().filter(is_active=True)
+
+
+#     def all(self):
+#         return self.get_queryset().all()
+class ActiveQueryset(models.QuerySet):
+    def isactive(self):
+        return self.filter(is_active=True)
+
+    def all(self):
+        return self
+
+
 # Create your models here.
 class Category(MPTTModel):
     name = models.CharField(max_length=100, unique=True)
@@ -39,6 +56,10 @@ class Product(models.Model):
     )
     is_active = models.BooleanField(default=False)
 
+    objects = ActiveQueryset.as_manager()
+    # objects = models.Manager()  #### this manager gives every data###
+    # isactive = ActiveManager()  ### this manager only give active data###
+
     def __str__(self):
         return self.name
 
@@ -48,6 +69,6 @@ class ProductLine(models.Model):
     sku = models.CharField(max_length=100)
     stock_qty = models.IntegerField()
     product = models.ForeignKey(
-        "Product", on_delete=models.CASCADE
+        "Product", on_delete=models.CASCADE, related_name="product_line"
     )  ### Product is in quotation Because of Product model has Category model in it which is MPTT###
     is_active = models.BooleanField(default=False)

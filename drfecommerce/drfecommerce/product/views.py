@@ -2,6 +2,13 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.db import connection
+from pygments import highlight  ## to highlight sql ##
+from pygments.formatters import TerminalFormatter  ## for terminal format view   ##
+from pygments.lexers import SqlLexer
+
+# for sqlite database formatter view on console, different bd different Lexer
+from sqlparse import format  ##only to view sql##
 
 # Create your views here.
 
@@ -54,13 +61,38 @@ class ProductViewSet(viewsets.ViewSet):
     )  # tell drf spectacular which serializer is used for documentation
     def retrieve(self, request, slug=None):
         serializer = ProductSerializer(
-            self.queryset.filter(slug=slug), many=True
+            self.queryset.filter(slug=slug).select_related(
+                "category", "brand"
+            ),  ### category and brand has many to one relation with product, data from these 2 tables are being fetched without any queries###
+            many=True,
+            # self.queryset.filter(slug=slug), many=True
         )  # django to serializer
-        return Response(serializer.data)  # serializer to response
+        data = Response(serializer.data)
+
+        q = list(connection.queries)
+        print(len(q))
+        for qs in q:
+            sqlformatted = format(str(qs["sql"]), reindent=True)
+            print(highlight(sqlformatted, SqlLexer(), TerminalFormatter()))
+        # x = self.queryset.filter(slug=slug)
+        # sqlformatted = format(str(x.query), reindent=True)
+        # print(highlight(sqlformatted, SqlLexer(), TerminalFormatter()))
+
+        return data
 
     def list(self, request):
-        serializer = ProductSerializer(self.queryset, many=True)  # django to serializer
-        return Response(serializer.data)  # serializer to response
+        serializer = ProductSerializer(
+            self.queryset.select_related("category", "brand"),
+            many=True,
+        )  # django to serializer
+        data = Response(serializer.data)  # serializer to response
+
+        q = list(connection.queries)
+        print(len(q))
+        for qs in q:
+            sqlformatted = format(str(qs["sql"]), reindent=True)
+            print(highlight(sqlformatted, SqlLexer(), TerminalFormatter()))
+        return data
 
     @action(
         methods=["get"],
