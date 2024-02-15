@@ -22,6 +22,7 @@ class ActiveQueryset(models.QuerySet):
 # Create your models here.
 class Category(MPTTModel):
     name = models.CharField(max_length=100, unique=True)
+    is_active = models.BooleanField(default=False)
     parent = TreeForeignKey(
         "self", on_delete=models.PROTECT, null=True, blank=True
     )  # if you want to delete category, then u first have to delete all the entries of it first...example: want to del clothes(u 1st need to del shirts and pants)
@@ -35,6 +36,7 @@ class Category(MPTTModel):
 
 class Brand(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -69,6 +71,8 @@ class ProductLine(models.Model):
     sku = models.CharField(max_length=100)
     stock_qty = models.IntegerField()
     product = models.ForeignKey(
-        "Product", on_delete=models.CASCADE, related_name="product_line"
+        "Product",
+        on_delete=models.CASCADE,
+        related_name="product_line",  ###related_name connects it to the Product Model###
     )  ### Product is in quotation Because of Product model has Category model in it which is MPTT###
     is_active = models.BooleanField(default=False)

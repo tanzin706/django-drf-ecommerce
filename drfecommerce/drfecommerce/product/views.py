@@ -73,7 +73,9 @@ class ProductViewSet(viewsets.ViewSet):
         print(len(q))
         for qs in q:
             sqlformatted = format(str(qs["sql"]), reindent=True)
-            print(highlight(sqlformatted, SqlLexer(), TerminalFormatter()))
+            print(
+                highlight(sqlformatted, SqlLexer(), TerminalFormatter())
+            )  ##needs sql parse for spliting sql and formatting sql
         # x = self.queryset.filter(slug=slug)
         # sqlformatted = format(str(x.query), reindent=True)
         # print(highlight(sqlformatted, SqlLexer(), TerminalFormatter()))
