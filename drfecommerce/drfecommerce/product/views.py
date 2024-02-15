@@ -63,7 +63,7 @@ class ProductViewSet(viewsets.ViewSet):
         serializer = ProductSerializer(
             self.queryset.filter(slug=slug).select_related(
                 "category", "brand"
-            ),  ### category and brand has many to one relation with product, data from these 2 tables are being fetched without any queries###
+            ),  ### category and brand has one to many relation with product, data from these 2 tables are being fetched without any queries###cat -> pro, bran -> pro###
             many=True,
             # self.queryset.filter(slug=slug), many=True
         )  # django to serializer
