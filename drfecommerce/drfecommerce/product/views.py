@@ -21,7 +21,7 @@ class CategoryViewSet(viewsets.ViewSet):
     A Simple Viewset for viewing all Categoreis
     """
 
-    queryset = Category.objects.all()  # database to django(queryset)
+    queryset = Category.objects.isactive()  # database to django(queryset)
 
     @extend_schema(
         responses=CategorySerializer
@@ -38,7 +38,7 @@ class BrandViewSet(viewsets.ViewSet):
     A Simple Viewset for viewing all Brands
     """
 
-    queryset = Brand.objects.all()  # database to django(queryset)
+    queryset = Brand.objects.isactive()  # database to django(queryset)
 
     @extend_schema(
         responses=BrandSerializer
@@ -76,6 +76,7 @@ class ProductViewSet(viewsets.ViewSet):
             print(
                 highlight(sqlformatted, SqlLexer(), TerminalFormatter())
             )  ##needs sql parse for spliting sql and formatting sql
+            ###needs pygments for highlighted text###
         # x = self.queryset.filter(slug=slug)
         # sqlformatted = format(str(x.query), reindent=True)
         # print(highlight(sqlformatted, SqlLexer(), TerminalFormatter()))

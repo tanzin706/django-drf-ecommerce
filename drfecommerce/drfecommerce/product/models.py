@@ -1,5 +1,6 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
+from .fields import CustomOrderField
 
 
 # class ActiveManager(models.Manager):
@@ -27,6 +28,8 @@ class Category(MPTTModel):
         "self", on_delete=models.PROTECT, null=True, blank=True
     )  # if you want to delete category, then u first have to delete all the entries of it first...example: want to del clothes(u 1st need to del shirts and pants)
 
+    objects = ActiveQueryset.as_manager()
+
     class MPTTMeta:
         order_insertion_by = ["name"]
 
@@ -37,6 +40,8 @@ class Category(MPTTModel):
 class Brand(models.Model):
     name = models.CharField(max_length=100, unique=True)
     is_active = models.BooleanField(default=False)
+
+    objects = ActiveQueryset.as_manager()
 
     def __str__(self):
         return self.name
@@ -76,3 +81,9 @@ class ProductLine(models.Model):
         related_name="product_line",  ###related_name connects it to the Product Model###
     )  ### Product is in quotation Because of Product model has Category model in it which is MPTT###
     is_active = models.BooleanField(default=False)
+    order = CustomOrderField(unique_for_field="Product", blank=True)
+
+    objects = ActiveQueryset.as_manager()
+
+    def __str__(self):
+        return str(self.order)
